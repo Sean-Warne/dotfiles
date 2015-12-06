@@ -33,47 +33,6 @@ for file in $files; do
 done
 
 
-#check if distro is arch
-if [[ -f /etc/pacman.conf ]] 
-then
-	#install pacaur
-	w="$(which pacaur)"
-	if [[ $w != /usr/bin/pacaur  ]]  
-
-	then 
-		#install cower (a dependancy of pacaur)
-		echo "installing cower"
-		sudo pacman -S wget --needed base-devel 
-		cd /tmp
-		wget https://aur.archlinux.org/cgit/aur.git/snapshot/cower.tar.gz
-		tar -xvf cower.tar.gz
-		cd cower 
-		makepkg -sri --skippgpcheck #i should probably fix this to not just skip
-
-		#install pacaur
-		echo "installing pacuar"
-		cd /tmp
-		wget https://aur.archlinux.org/cgit/aur.git/snapshot/pacaur.tar.gz
-		tar -xvf pacaur.tar.gz
-		cd pacaur
-		makepkg -sri
-	fi
-
-	#Run things only done if arch is installed
-	pacaur -S vim-youcompleteme-git png++
-	pacman -S dmenu vim i3 
-
-	if [[ -z addedstuff ]]
-	then
-		git clone git@github.com:berock212/Maze-background.git
-		cd Maze-background
-		make
-		chmod +x setbackground.sh
-		sed -i 's|prog=~/documents/cpp/maze/png/mazepng|prog=~/dotfiles/Maze-background/mazepng|g' setbackground.sh
-		cd
-	fi
-fi
-
 #install vim plugins from git
 git clone https://github.com/nanotech/jellybeans.vim.git ~/dotfiles/vim/bundle/jellybeans.vim
 git clone https://github.com/scrooloose/nerdtree.git ~/dotfiles/vim/bundle/nerdtree
